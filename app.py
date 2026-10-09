@@ -75,8 +75,9 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+# FIX: Attempt counter started at 1, which used up a guess before you played. Now starts at 0, using agent mode
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
+    st.session_state.attempts = 0
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -89,10 +90,19 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
-st.info(
-    f"Guess a number between 1 and 100. "
-    f"Attempts left: {attempt_limit - st.session_state.attempts}"
-)
+# FIX: This box was drawn before the guess was counted, so it showed one too many attempts left.
+# Now it's a placeholder that gets redrawn after each guess is counted, using agent mode
+attempts_box = st.empty()
+
+
+def show_attempts_left():
+    attempts_box.info(
+        f"Guess a number between 1 and 100. "
+        f"Attempts left: {attempt_limit - st.session_state.attempts}"
+    )
+
+
+show_attempts_left()
 
 with st.expander("Developer Debug Info"):
     st.write("Secret:", st.session_state.secret)
@@ -114,9 +124,14 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
+# FIX: New Game only reset attempts and secret, so status stayed "won"/"lost" and the game stopped again.
+# Now it resets status, history, and score too, and picks the secret from the current difficulty's range, using agent mode
 if new_game:
     st.session_state.attempts = 0
-    st.session_state.secret = random.randint(1, 100)
+    st.session_state.secret = random.randint(low, high)
+    st.session_state.status = "playing"
+    st.session_state.history = []
+    st.session_state.score = 0
     st.success("New game started.")
     st.rerun()
 
@@ -129,6 +144,7 @@ if st.session_state.status != "playing":
 
 if submit:
     st.session_state.attempts += 1
+    show_attempts_left()
 
     ok, guess_int, err = parse_guess(raw_guess)
 
@@ -157,6 +173,8 @@ if submit:
                 f"Final score: {st.session_state.score}"
             )
         else:
+            # FIX: This check was right, but with the counter starting at 1 it ended the game one guess early.
+            # With the counter starting at 0, you now lose only after using all your attempts, using agent mode
             if st.session_state.attempts >= attempt_limit:
                 st.session_state.status = "lost"
                 st.error(
