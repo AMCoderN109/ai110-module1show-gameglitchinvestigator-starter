@@ -55,12 +55,13 @@ Yes, the AI helped design tests for the bug fix. The AI wrote 5 different tests 
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 
-So steamlit "reruns" are like a digital flipbook that is able to read from the beginning to end of your code like when you read a good book. For Session state is like a cheat sheet that contain all your code notes for that flipbook and can use later like how you create a study or notes based on your lectures and your able to be reference it back when doing work.  
+So steamlit "reruns" are like a digital flipbook that is able to read from the beginning to end of your code like when you read a good book. For Session state is like a cheat sheet that contain all your code notes for that flipbook and can use later like how you create a study or notes based on your lectures and your able to be reference it back when doing work.
+
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
+- What is one habit or strategy from this project that you want to reuse in future labs or projects? 
 - This could be a testing habit, a prompting strategy, or a way you used Git.
 One strategy from this project I want to reuse in future labs or proejcts is instead of taking a long time look at the code myself to figure out what line of code has the error in a long list of code. I can ask AI to suggest me where the location of the error could be to be able fix with suggestion of AI or me researching a solution. As well explain code I never seen before to have a better understand how to solve problem in front of me. 
 
